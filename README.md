@@ -45,7 +45,7 @@ In ViewController.swift a more complex example is done showing how to insert a D
 understands native Swift Date() so you can insert these objects with out converting, and it will convert them to text and store them, 
 and when retrieved convert them back from text to Date.
 
-Of course the real power of SQLite is it's Transaction capability. Here you can literally queue up a 400 SQL statements with parameters
+Of course the real power of SQLite is it's Transaction capability. Here you can literally queue up 400 SQL statements with parameters
 and insert them all at once which is really powerful since it's so fast. ViewController.swift also shows you an example of how to do this.
 All you're really doing is creating an Array of Dictionaries called 'sqlAndParams', in this Array your storing Dictionaries with two keys
 'SQL' for the String sequel statement or query, and 'PARAMS' which is just an Array of native objects SQLite understands for that query. 
@@ -62,12 +62,12 @@ Once you've created this array, you just call.
   	}
 ```
 
-In addition all executeStatement and getRecordsForQuery can be done with simple String for SQL query and an Array for the parameters needed by query.
+In addition all executeStatement and getRecordsForQuery methods can be done with simple String for SQL query and an Array for the parameters needed by the query.
 	
 ```swift
 	let sql : String = "insert into AppInfo (name,value,descrip) values(?,?,?)"
 	let params : Array = ["SQLiteDemo","1.0.0","unencrypted"]
-	let status = db.ExecuteStatement(sql, WithParameters: params)
+	let status = db.executeStatement(sql, withParameters: params)
 	if(status)
 	{
 		//Read Table AppInfo into an Array of Dictionaries for the above Transactions
