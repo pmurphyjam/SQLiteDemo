@@ -81,7 +81,7 @@ In addition all executeStatement and getRecordsForQuery methods can be done with
 	
 An Objective-C version also exists and is called the same SQLDataAccess, so now you can choose to write your sequel in Objective-C or Swift.
 In addition SQLDataAccess will also work with SQLCipher, the present code isn't setup yet to work with it, but it's pretty easy to do, and 
-example of how to do this is actually in the Objective-C version of SQLDataAccess.
+an example of how to do this is actually in the Objective-C version of SQLDataAccess.
 
 SQLDataAccess is a very fast and efficient class, and can be used in place of CoreData which really just uses SQLite as it's underlying data
 store without all the CoreData core data integrity fault crashes that come with CoreData.
