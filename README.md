@@ -21,11 +21,11 @@ First you need to open the SQLite Database your dealing with
 If openConnection succeeded, now you can do a simple insert into Table AppInfo 
 	
 ```swift
-    //Insert into Table AppInfo
+	//Insert into Table AppInfo
 	let status = db.executeStatement("insert into AppInfo (name,value,descrip,date) values(?,?,?,?)", "SQLiteDemo","1.0.2","unencrypted",Date() as CVarArg)
 	if(status)
 	{
-	    //Read Table AppInfo into an Array of Dictionaries
+		//Read Table AppInfo into an Array of Dictionaries
 		let results = db.getRecordsForQuery("select * from AppInfo ")
 		NSLog("Results = \(results)")
 	}
@@ -56,7 +56,7 @@ Once you've created this array, you just call.
   	let status = db.executeTransaction(sqlAndParams)
   	if(status)
   	{
-  	    //Read Table AppInfo into an Array of Dictionaries for the above Transactions
+		//Read Table AppInfo into an Array of Dictionaries for the above Transactions
 		let results = db.getRecordsForQuery("select * from AppInfo ")
 		NSLog("Results = \(results)")
   	}
@@ -66,14 +66,14 @@ In addition all executeStatement and getRecordsForQuery can be done with simple 
 	
 ```swift
 	let sql : String = "insert into AppInfo (name,value,descrip) values(?,?,?)"
-    let params : Array = ["SQLiteDemo","1.0.0","unencrypted"]
-    let status = db.ExecuteStatement(sql, WithParameters: params)
-    if(status)
-  	{
-  	    //Read Table AppInfo into an Array of Dictionaries for the above Transactions
+	let params : Array = ["SQLiteDemo","1.0.0","unencrypted"]
+	let status = db.ExecuteStatement(sql, WithParameters: params)
+	if(status)
+	{
+		//Read Table AppInfo into an Array of Dictionaries for the above Transactions
 		let results = db.getRecordsForQuery("select * from AppInfo ")
 		NSLog("Results = \(results)")
-  	}
+	}
 ```
 	
 An Objective-C version also exists and is called the same SQLDataAccess, so now you can choose to write your sequel in Objective-C or Swift.
