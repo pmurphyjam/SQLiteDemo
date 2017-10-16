@@ -14,7 +14,7 @@ First you need to open the SQLite Database your dealing with
 
 ```swift
     let db = SQLDataAccess.shared
-    db.setDBName(name:"SQLite.db")
+	db.setDBName(name:"SQLite.db")
 	let opened = db.openConnection(copyFile:true)
 ```
 
