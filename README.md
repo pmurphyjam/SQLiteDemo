@@ -32,6 +32,9 @@ If openConnection succeeded, now you can do a simple insert into Table AppInfo
 ```
 
 See how simple that was! 
+The Date term needed to be cast as a CVarArg which is just an array. Most all other data types will not require this casting.
+You can enter Strings, and integers right after the sequel statement since all of these terms are considered to be parameters for the sequel. 
+The CVarArg array just makes it convenient to enter all your sequel in just one executeStatement or getRecordsForQuery call.
 
 SQLDataAccess will store, text, double, float, blob, Date, integer and long long integers. 
 For Blobs you can store binary, varbinary, blob.
