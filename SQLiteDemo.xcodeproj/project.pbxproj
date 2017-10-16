@@ -459,7 +459,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "SQliteDemo/Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "SQliteDemo/include/Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "SQLiteDemo-Swift.h";
 				SWIFT_VERSION = 3.0;
 			};
@@ -477,7 +477,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "SQliteDemo/Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "SQliteDemo/include/Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "SQLiteDemo-Swift.h";
 				SWIFT_VERSION = 3.0;
 			};
