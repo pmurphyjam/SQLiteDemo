@@ -20,7 +20,7 @@ First you need to open the SQLite Database your dealing with
 
 If openConnection succeeded, now you can do a simple insert into Table AppInfo 
 	
-	```swift
+```swift
     //Insert into Table AppInfo
 	let status = db.executeStatement("insert into AppInfo (name,value,descrip,date) values(?,?,?,?)", "SQLiteDemo","1.0.2","unencrypted",Date() as CVarArg)
 	if(status)
@@ -29,7 +29,8 @@ If openConnection succeeded, now you can do a simple insert into Table AppInfo
 		let results = db.getRecordsForQuery("select * from AppInfo ")
 		NSLog("Results = \(results)")
 	}
-	```
+```
+
 See how simple that was! 
 
 SQLDataAccess will store, text, double, float, blob, Date, integer and long long integers. 
@@ -51,7 +52,7 @@ All you're really doing is creating an Array of Dictionaries called 'sqlAndParam
 Each 'sqlParams' which is an individual Dictionary of sequel query plus parameters is then stored in the 'sqlAndParams' Array. 
 Once you've created this array, you just call.
 	
-	```swift
+```swift
   	let status = db.executeTransaction(sqlAndParams)
   	if(status)
   	{
@@ -59,10 +60,11 @@ Once you've created this array, you just call.
 		let results = db.getRecordsForQuery("select * from AppInfo ")
 		NSLog("Results = \(results)")
   	}
-	```
+```
+
 In addition all executeStatement and getRecordsForQuery can be done with simple String for SQL query and an Array for the parameters needed by query.
 	
-	```swift
+```swift
 	let sql : String = "insert into AppInfo (name,value,descrip) values(?,?,?)"
     let params : Array = ["SQLiteDemo","1.0.0","unencrypted"]
     let status = db.ExecuteStatement(sql, WithParameters: params)
@@ -72,7 +74,7 @@ In addition all executeStatement and getRecordsForQuery can be done with simple 
 		let results = db.getRecordsForQuery("select * from AppInfo ")
 		NSLog("Results = \(results)")
   	}
-	```
+```
 	
 An Objective-C version also exists and is called the same SQLDataAccess, so now you can choose to write your sequel in Objective-C or Swift.
 In addition SQLDataAccess will also work with SQLCipher, the present code isn't setup yet to work with it, but it's pretty easy to do, and 
