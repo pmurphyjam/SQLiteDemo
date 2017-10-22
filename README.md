@@ -47,6 +47,7 @@ The results array is an Array of Dictionary’s where the ‘key’ is your tabl
 ```
 
 SQLDataAccess will store, text, double, float, blob, Date, integer and long long integers. 
+
 For Blobs you can store binary, varbinary, blob.
 
 For Text you can store char, character, clob, national varying character, native character, nchar, nvarchar, varchar, variant, varying character, text.
