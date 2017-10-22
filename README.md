@@ -35,6 +35,16 @@ See how simple that was!
 
 The first term in db.executeStatement is your SQL as String, all the terms that follow are a variadic argument list of type Any, and are your parameters in an Array. You can enter Strings, and integers right after the sequel statement since all of these terms are considered to be parameters for the sequel. The variadic argument array just makes it convenient to enter all your sequel in just one executeStatement or getRecordsForQuery call.
 
+The results array is an Array of Dictionary’s where the ‘key’ is your tables column name, and the ‘value’ is your data obtained from SQLite. You can easily iterate through this array with a for loop or print it out directly.
+
+```swift
+	for dic in results as! [[String:AnyObject]] {
+	   print(“result = \(dic)”)
+	}
+
+
+```
+
 SQLDataAccess will store, text, double, float, blob, Date, integer and long long integers. 
 For Blobs you can store binary, varbinary, blob.
 For Text you can store char, character, clob, national varying character, native character, nchar, nvarchar, varchar, variant, varying character, text.
