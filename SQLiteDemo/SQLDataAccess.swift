@@ -46,11 +46,13 @@ class SQLDataAccess: NSObject {
         var rc = sqlite3_close(sqlite3dbConn)
         if(rc == SQLITE_BUSY)
         {
-            let stmt = sqlite3_next_stmt(sqlite3dbConn, nil)
+            let ps:OpaquePointer? = nil
+            var stmt = sqlite3_next_stmt(sqlite3dbConn, ps)
             while (stmt != nil)
             {
-                sqlite3_finalize(stmt);
+                stmt = sqlite3_next_stmt(sqlite3dbConn, stmt)
             }
+            sqlite3_finalize(stmt);
             rc = sqlite3_close(sqlite3dbConn);
         }
         sqlite3dbConn = nil;
