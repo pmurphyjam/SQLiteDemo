@@ -47,10 +47,15 @@ The results array is an Array of Dictionary’s where the ‘key’ is your tabl
 
 SQLDataAccess will store, text, double, float, blob, Date, integer and long long integers. 
 For Blobs you can store binary, varbinary, blob.
+
 For Text you can store char, character, clob, national varying character, native character, nchar, nvarchar, varchar, variant, varying character, text.
+
 For Dates you can store datetime, time, timestamp, date.
+
 For Integers you can store bigint, bit, bool, boolean, int2, int8, integer, mediumint, smallint, tinyint, int.
+
 For Doubles you can store decimal, double precision, float, numeric, real, double. Double has the most precision.
+
 You can even store Nulls of type Null.
 
 In ViewController.swift a more complex example is done showing how to insert a Dictionary as a 'Blob'. In addition SQLDataAccess 
