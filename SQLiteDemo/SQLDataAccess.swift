@@ -180,7 +180,7 @@ class SQLDataAccess: NSObject {
         return ps
     }
 
-    public func executeStatement(_ query: String!, _ args:Any...) -> Bool {
+    @discardableResult public func executeStatement(_ query: String!, _ args:Any...) -> Bool {
         
         var status : Bool = false
         if(sqlite3dbConn == nil)
@@ -192,7 +192,7 @@ class SQLDataAccess: NSObject {
         return status
     }
     
-    public func executeStatement(_ query: String, withParams parameters: Array<Any>!) -> Bool {
+    @discardableResult public func executeStatement(_ query: String, withParams parameters: Array<Any>!) -> Bool {
         
         var status : Bool = false
         
@@ -357,7 +357,7 @@ class SQLDataAccess: NSObject {
         return results
     }
     
-    public func executeTransaction(_ sqlAndParamsForTransaction: Array<[String:Any]>!) -> Bool {
+    @discardableResult public func executeTransaction(_ sqlAndParamsForTransaction: Array<[String:Any]>!) -> Bool {
         
         var status : Bool = true
         
