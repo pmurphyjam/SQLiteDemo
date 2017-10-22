@@ -23,7 +23,7 @@ If openConnection succeeded, now you can do a simple insert into Table AppInfo
 ```swift
 	//Insert into Table AppInfo
 	let status = db.executeStatement("insert into AppInfo (name,value,descrip,date) values(?,?,?,?)",
-\r	”SQLiteDemo","1.0.2","unencrypted",Date())
+  	”SQLiteDemo","1.0.2","unencrypted",Date())
 	if(status)
 	{
 		//Read Table AppInfo into an Array of Dictionaries
