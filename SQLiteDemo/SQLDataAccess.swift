@@ -23,7 +23,7 @@ class SQLDataAccess: NSObject {
     private var sqlite3dbConn:OpaquePointer? = nil
     private let db_format = DateFormatter()
 
-    private override init() {
+    public override init() {
         super.init()
         queue = DispatchQueue(label:DB_Queue, attributes:[])
         //for 24-hour format need locale to work, ISO-8601 format
@@ -180,7 +180,7 @@ class SQLDataAccess: NSObject {
         return ps
     }
 
-    public func executeStatement(_ query: String!, _ args:CVarArg...) -> Bool {
+    public func executeStatement(_ query: String!, _ args:Any...) -> Bool {
         
         var status : Bool = false
         if(sqlite3dbConn == nil)
@@ -230,7 +230,7 @@ class SQLDataAccess: NSObject {
         return status
     }
 
-    public func getRecordsForQuery(_ query: String!, _ args:CVarArg...) -> Array<Any> {
+    public func getRecordsForQuery(_ query: String!, _ args:Any...) -> Array<Any> {
         
         var results = [Any]()
         if(sqlite3dbConn == nil)

@@ -21,31 +21,35 @@ class ViewController: UIViewController {
         if(opened)
         {
             NSLog("Found SQLite DB")
-            //let sql : String = "insert into AppInfo (name,value,descrip) values(?,?,?)"
-            //let params : Array = ["SQLiteDemo","1.0.0","unencrypted"]
-            //let status = db.ExecuteStatement(sql, WithParameters: params)
+            /*
+            let sql : String = "insert into AppInfo (name,value,descrip) values(?,?,?)"
+            let params : Array = ["SQLiteDemo","1.0.0","unencrypted"]
+            let status = executeStatement(sql, withParams: params)
+            */
             let dict = ["Password":"123456"]
             let blob : NSData = NSKeyedArchiver.archivedData(withRootObject:dict) as NSData
 
-            let status = db.executeStatement("insert into AppInfo (name,value,descrip,date,blob) values(?,?,?,?,?)", "SQLiteDemo","1.0.2","unencrypted",Date() as CVarArg,blob)
+            let status = db.executeStatement("insert into AppInfo (name,value,descrip,date,blob) values(?,?,?,?,?)", "SQLiteDemo","1.0.2","unencrypted",Date(),blob)
+
             if(status)
             {
                 NSLog("Insert Ok")
+                /*
                 let sql : String = "select * from AppInfo"
                 let param : [String] = []
-                //let results = db.getRecordsForQuery(sql, withParams: param)
-                //let results = db.getRecordsForQuery("select * from AppInfo where ID = ? or ID = ?",20,21)
+                let results = db.getRecordsForQuery(sql, withParams: param)
+                let results = db.getRecordsForQuery("select * from AppInfo where ID = ? or ID = ?",20,21)
+                */
                 let results = db.getRecordsForQuery("select * from AppInfo ")
-                //NSLog("Results = \(results)")
+                NSLog("Results = \(results)")
                 
                 for dic in results as! [[String:AnyObject]]
                 {
                     let value = dic["blob"] as? Data
                     if (value?.count)! > 0
                     {
-                        NSLog(" value = \(value!)")
                         let dictionary:NSDictionary? = NSKeyedUnarchiver.unarchiveObject(with: value! )! as? NSDictionary
-                        NSLog("dict = \(dictionary!)")
+                        NSLog("dictionary[\(value!)] = \(dictionary!)")
                     }
                 }
             }
@@ -89,9 +93,8 @@ class ViewController: UIViewController {
                     let value = dic["blob"] as? Data
                     if (value?.count)! > 0
                     {
-                        NSLog(" value = \(value!)")
                         let dictionary:NSDictionary? = NSKeyedUnarchiver.unarchiveObject(with: value! )! as? NSDictionary
-                        NSLog("dict = \(dictionary!)")
+                        NSLog("dictionary[\(value!)] = \(dictionary!)")
                     }
                 }
             }
