@@ -50,10 +50,19 @@ class SQLDataAccess: NSObject {
             var stmt = sqlite3_next_stmt(sqlite3dbConn, ps)
             while (stmt != nil)
             {
-                stmt = sqlite3_next_stmt(sqlite3dbConn, stmt)
+                stmt = sqlite3_next_stmt(sqlite3dbConn, ps)
+                sqlite3_finalize(stmt)
             }
-            sqlite3_finalize(stmt);
-            rc = sqlite3_close(sqlite3dbConn);
+            rc = sqlite3_close(sqlite3dbConn)
+            if(rc == SQLITE_OK)
+            {
+                NDBLog("DA : DB : CLOSED")
+            }
+            else if(rc == SQLITE_BUSY)
+            {
+                NDBLog("DA : DB : BUSY CLOSED")
+                sqlite3_finalize(stmt);
+            }
         }
         sqlite3dbConn = nil;
     }
@@ -91,6 +100,7 @@ class SQLDataAccess: NSObject {
             let from = (rp as NSString).appendingPathComponent(DB_FILE)
             do {
                 try fm.copyItem(atPath:from, toPath:path)
+
             } catch let error {
                 assert(false, "DA : Failed to copy writable version of \(DB_FILE)! Error - \(error.localizedDescription)")
                 return false
@@ -107,25 +117,26 @@ class SQLDataAccess: NSObject {
         }
         else
         {
-            NDBLog("DA : \(DB_FILE) opened")
+            NDBLog("DA : \(DB_FILE) opened : path = \(path)")
         }
         
         return true
     }
     
-    private func stmt(_ ps: OpaquePointer!, forQuery query: String, withParams parameters: Array<Any>!) -> OpaquePointer! {
+    private func stmt(_ ps: inout OpaquePointer!, forQuery query: String, withParams parameters: Array<Any>!) -> OpaquePointer! {
         
         if(sqlite3dbConn == nil)
         {
             return nil
         }
+        //Use inout ps pointer so return can hit sqlite3_finalize
+        var code:Int32 = -1
         
-        var ps:OpaquePointer? = ps
-
-        let cSql = query.cString(using: String.Encoding.utf8)
-
-        let code = sqlite3_prepare_v2(sqlite3dbConn, cSql!, CInt(query.lengthOfBytes(using: String.Encoding.utf8)), &ps, nil)
-
+        //Do sanity check on query first to make sure it's Ok
+        if let cSql = query.cString(using: String.Encoding.utf8) {
+            code = sqlite3_prepare_v2(sqlite3dbConn, cSql, CInt(query.lengthOfBytes(using: String.Encoding.utf8)), &ps, nil)
+        }
+        
         if(code == SQLITE_OK)
         {
             var flag:CInt = 0
@@ -205,9 +216,9 @@ class SQLDataAccess: NSObject {
         
         queue.sync {
             //Synchronize all accesses
-            let ps:OpaquePointer? = nil
-
-            if let ps = self.stmt(ps, forQuery:query, withParams:parameters) {
+            var ps:OpaquePointer? = nil
+            
+            if let ps = self.stmt(&ps, forQuery:query, withParams:parameters) {
                 let code = sqlite3_step(ps)
                 if(code == SQLITE_DONE)
                 {
@@ -217,7 +228,7 @@ class SQLDataAccess: NSObject {
                 {
                     status = false
                 }
-
+                
                 if( !status )
                 {
                     let errMsg = String(validatingUTF8:sqlite3_errmsg(sqlite3dbConn))
@@ -228,8 +239,8 @@ class SQLDataAccess: NSObject {
             sqlite3_finalize(ps)
             sqlite3_exec(sqlite3dbConn, "COMMIT TRANSACTION", nil, nil, nil)
         }
+        return status //queue.sync {status}
         
-        return status
     }
 
     public func getRecordsForQuery(_ query: String!, _ args:Any...) -> Array<Any> {
@@ -252,7 +263,7 @@ class SQLDataAccess: NSObject {
         let dateTypes = ["DATE", "DATETIME", "TIME", "TIMESTAMP"]
         let intTypes  = ["BIGINT", "BIT", "BOOL", "BOOLEAN", "INT", "INT2", "INT8", "INTEGER", "MEDIUMINT", "SMALLINT", "TINYINT"]
         let nullTypes = ["NULL"]
-        let realTypes = ["DECIMAL", "DOUBLE", "DOUBLE PRECISION", "FLOAT", "NUMERIC", "REAL"]
+        let realTypes = ["DECIMAL", "DOUBLE", "DOUBLE PRECISION", "FLOAT", "CGFLOAT", "NUMERIC", "REAL"]
         // Determine type of column - http://www.sqlite.org/c3ref/c_blob.html
         let buf = sqlite3_column_decltype(ps, index)
         if buf != nil {
@@ -290,16 +301,16 @@ class SQLDataAccess: NSObject {
     public func getRecordsForQuery(_ query: String!, withParams parameters: Array<Any>!) -> Array<[String:Any]> {
         //Returns an Array of Dictionaries
         var results = [[String:Any]]()
-        
+
         if(sqlite3dbConn == nil)
         {
             return results
         }
-        
         queue.sync {
+
             //Synchronize all accesses
-            let ps:OpaquePointer? = nil
-            if let ps = self.stmt(ps, forQuery:query, withParams:parameters)
+            var ps:OpaquePointer? = nil
+            if let ps = self.stmt(&ps, forQuery:query, withParams:parameters)
             {
                 let columnCount = sqlite3_column_count(ps)
                 var result = Dictionary<String,AnyObject>()
@@ -311,18 +322,18 @@ class SQLDataAccess: NSObject {
                         let name = sqlite3_column_name(ps,i)
                         switch columnType {
                         case SQLITE_INTEGER:
-                            result[String(validatingUTF8: name!)!] = Int64(sqlite3_column_int64(ps,i)) as AnyObject!
+                            result[String(validatingUTF8: name!)!] = Int64(sqlite3_column_int64(ps,i)) as AnyObject?
                         case SQLITE_FLOAT:
-                            result[String(validatingUTF8: name!)!] = Double(sqlite3_column_double(ps,i)) as AnyObject!
+                            result[String(validatingUTF8: name!)!] = Double(sqlite3_column_double(ps,i)) as AnyObject?
                         case SQLITE_TEXT:
                             if let ptr = UnsafeRawPointer.init(sqlite3_column_text(ps,i)) {
                                 let uptr = ptr.bindMemory(to:CChar.self, capacity:0)
-                                result[String(validatingUTF8: name!)!] = String(validatingUTF8:uptr) as AnyObject!
+                                result[String(validatingUTF8: name!)!] = String(validatingUTF8:uptr) as AnyObject?
                             }
                         case SQLITE_BLOB:
-                            result[String(validatingUTF8: name!)!] = NSData(bytes:sqlite3_column_blob(ps,i), length:Int(sqlite3_column_bytes(ps,i))) as AnyObject!
+                            result[String(validatingUTF8: name!)!] = NSData(bytes:sqlite3_column_blob(ps,i), length:Int(sqlite3_column_bytes(ps,i))) as AnyObject?
                         case SQLITE_NULL:
-                            result[String(validatingUTF8: name!)!] = String(validatingUTF8:"") as AnyObject!
+                            result[String(validatingUTF8: name!)!] = String(validatingUTF8:"") as AnyObject?
                         case SQLITE_DATE:
                             //Our defined DATE
                             if let ptr = UnsafeRawPointer.init(sqlite3_column_text(ps,i)) {
@@ -338,7 +349,11 @@ class SQLDataAccess: NSObject {
                                     let t = mktime(&time) + diff
                                     let ti = TimeInterval(t)
                                     let date = Date(timeIntervalSince1970:ti)
-                                    result[String(validatingUTF8: name!)!] = date as AnyObject!
+                                    result[String(validatingUTF8: name!)!] = date as AnyObject?
+                                }
+                                else
+                                {
+                                    NELog("DA : SQL Error getRecords Invalid Date ")
                                 }
                             }
                         default:
@@ -356,7 +371,7 @@ class SQLDataAccess: NSObject {
             }
             sqlite3_finalize(ps)
         }
-        return results
+        return results //queue.sync {results}
     }
     
     @discardableResult public func executeTransaction(_ sqlAndParamsForTransaction: Array<[String:Any]>!) -> Bool {
@@ -372,12 +387,12 @@ class SQLDataAccess: NSObject {
             //Synchronize all accesses
             for i in 0..<sqlAndParamsForTransaction.count {
 
-                let ps:OpaquePointer? = nil
+                var ps:OpaquePointer? = nil
                 sqlite3_exec(sqlite3dbConn, "BEGIN EXCLUSIVE TRANSACTION", nil, nil, nil)
                 let query = sqlAndParamsForTransaction[i][SQL] as! String
                 let parameters = sqlAndParamsForTransaction[i][PARAMS] as! Array<Any>
 
-                if let ps = self.stmt(ps, forQuery:query, withParams:parameters) {
+                if let ps = self.stmt(&ps, forQuery:query, withParams:parameters) {
                     let code = sqlite3_step(ps)
                     if(code == SQLITE_DONE)
                     {

@@ -246,6 +246,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -461,7 +462,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "SQliteDemo/include/Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "SQLiteDemo-Swift.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -479,7 +480,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "SQliteDemo/include/Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "SQLiteDemo-Swift.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
