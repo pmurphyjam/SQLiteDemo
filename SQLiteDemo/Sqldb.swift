@@ -14,6 +14,7 @@
 
 import UIKit
 
+
 protocol Sqldb {
     //Every Model requires tableName to be defined for protocol
     var sortAlpha:Bool {set get}
