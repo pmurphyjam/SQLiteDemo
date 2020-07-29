@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A3A19F11F946E7100D1F733 /* DataConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3A19F01F946E7100D1F733 /* DataConstants.swift */; };
+		1A50C52B24CF78E40084A867 /* Sqldb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A50C52A24CF78E40084A867 /* Sqldb.swift */; };
 		1AB750811F92946A00D87E0F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB750801F92946A00D87E0F /* AppDelegate.swift */; };
 		1AB750831F92946A00D87E0F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB750821F92946A00D87E0F /* ViewController.swift */; };
 		1AB750861F92946A00D87E0F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AB750841F92946A00D87E0F /* Main.storyboard */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		1A3A19F01F946E7100D1F733 /* DataConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataConstants.swift; sourceTree = "<group>"; };
+		1A50C52A24CF78E40084A867 /* Sqldb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sqldb.swift; sourceTree = "<group>"; };
 		1AB7507D1F92946A00D87E0F /* SQLiteDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SQLiteDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AB750801F92946A00D87E0F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1AB750821F92946A00D87E0F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 			children = (
 				1AB750801F92946A00D87E0F /* AppDelegate.swift */,
 				1AB750821F92946A00D87E0F /* ViewController.swift */,
+				1A50C52A24CF78E40084A867 /* Sqldb.swift */,
 				1AB750AE1F9294CD00D87E0F /* SQLDataAccess.swift */,
 				1A3A19F01F946E7100D1F733 /* DataConstants.swift */,
 				1AB750B61F92AE6000D87E0F /* sqlite3.h */,
@@ -296,6 +299,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A3A19F11F946E7100D1F733 /* DataConstants.swift in Sources */,
+				1A50C52B24CF78E40084A867 /* Sqldb.swift in Sources */,
 				1AB750831F92946A00D87E0F /* ViewController.swift in Sources */,
 				1AB750AF1F9294CD00D87E0F /* SQLDataAccess.swift in Sources */,
 				1AB750811F92946A00D87E0F /* AppDelegate.swift in Sources */,
