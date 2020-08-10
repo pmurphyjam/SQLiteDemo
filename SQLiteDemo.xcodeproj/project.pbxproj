@@ -3,11 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1A3A19F11F946E7100D1F733 /* DataConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A3A19F01F946E7100D1F733 /* DataConstants.swift */; };
+		1A4BFC6124E1E9BD009D9AA1 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 1A4BFC6024E1E9BD009D9AA1 /* Logging */; };
+		1A4BFC6424E1EA5F009D9AA1 /* ObjectMapper in Frameworks */ = {isa = PBXBuildFile; productRef = 1A4BFC6324E1EA5F009D9AA1 /* ObjectMapper */; };
+		1A4BFC6624E1F29B009D9AA1 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4BFC6524E1F29B009D9AA1 /* AppInfo.swift */; };
+		1A4BFC6824E1F636009D9AA1 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4BFC6724E1F636009D9AA1 /* Models.swift */; };
+		1A4BFC6A24E1F6F2009D9AA1 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4BFC6924E1F6F2009D9AA1 /* DataManager.swift */; };
 		1A50C52B24CF78E40084A867 /* Sqldb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A50C52A24CF78E40084A867 /* Sqldb.swift */; };
 		1AB750811F92946A00D87E0F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB750801F92946A00D87E0F /* AppDelegate.swift */; };
 		1AB750831F92946A00D87E0F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB750821F92946A00D87E0F /* ViewController.swift */; };
@@ -39,7 +43,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1A3A19F01F946E7100D1F733 /* DataConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataConstants.swift; sourceTree = "<group>"; };
+		1A4BFC6524E1F29B009D9AA1 /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
+		1A4BFC6724E1F636009D9AA1 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		1A4BFC6924E1F6F2009D9AA1 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		1A50C52A24CF78E40084A867 /* Sqldb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sqldb.swift; sourceTree = "<group>"; };
 		1AB7507D1F92946A00D87E0F /* SQLiteDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SQLiteDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AB750801F92946A00D87E0F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -65,6 +71,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A4BFC6424E1EA5F009D9AA1 /* ObjectMapper in Frameworks */,
+				1A4BFC6124E1E9BD009D9AA1 /* Logging in Frameworks */,
 				1AB750B21F9295B400D87E0F /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -114,7 +122,9 @@
 				1AB750821F92946A00D87E0F /* ViewController.swift */,
 				1A50C52A24CF78E40084A867 /* Sqldb.swift */,
 				1AB750AE1F9294CD00D87E0F /* SQLDataAccess.swift */,
-				1A3A19F01F946E7100D1F733 /* DataConstants.swift */,
+				1A4BFC6924E1F6F2009D9AA1 /* DataManager.swift */,
+				1A4BFC6524E1F29B009D9AA1 /* AppInfo.swift */,
+				1A4BFC6724E1F636009D9AA1 /* Models.swift */,
 				1AB750B61F92AE6000D87E0F /* sqlite3.h */,
 				1AB750841F92946A00D87E0F /* Main.storyboard */,
 				1AB750871F92946A00D87E0F /* Assets.xcassets */,
@@ -175,6 +185,10 @@
 			dependencies = (
 			);
 			name = SQLiteDemo;
+			packageProductDependencies = (
+				1A4BFC6024E1E9BD009D9AA1 /* Logging */,
+				1A4BFC6324E1EA5F009D9AA1 /* ObjectMapper */,
+			);
 			productName = SQLiteDemo;
 			productReference = 1AB7507D1F92946A00D87E0F /* SQLiteDemo.app */;
 			productType = "com.apple.product-type.application";
@@ -254,6 +268,10 @@
 				Base,
 			);
 			mainGroup = 1AB750741F92946A00D87E0F;
+			packageReferences = (
+				1A4BFC5F24E1E9BD009D9AA1 /* XCRemoteSwiftPackageReference "swift-log" */,
+				1A4BFC6224E1EA5F009D9AA1 /* XCRemoteSwiftPackageReference "ObjectMapper" */,
+			);
 			productRefGroup = 1AB7507E1F92946A00D87E0F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -298,9 +316,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A3A19F11F946E7100D1F733 /* DataConstants.swift in Sources */,
 				1A50C52B24CF78E40084A867 /* Sqldb.swift in Sources */,
+				1A4BFC6624E1F29B009D9AA1 /* AppInfo.swift in Sources */,
 				1AB750831F92946A00D87E0F /* ViewController.swift in Sources */,
+				1A4BFC6A24E1F6F2009D9AA1 /* DataManager.swift in Sources */,
+				1A4BFC6824E1F636009D9AA1 /* Models.swift in Sources */,
 				1AB750AF1F9294CD00D87E0F /* SQLDataAccess.swift in Sources */,
 				1AB750811F92946A00D87E0F /* AppDelegate.swift in Sources */,
 			);
@@ -446,7 +466,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -458,7 +479,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = QJ7DWU7T8P;
 				INFOPLIST_FILE = SQLiteDemo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				OTHER_SWIFT_FLAGS = "-D DEBUGERROR";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fitamatic.SQLiteDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -476,7 +500,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = QJ7DWU7T8P;
 				INFOPLIST_FILE = SQLiteDemo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				OTHER_SWIFT_FLAGS = "-D DEBUGERROR";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fitamatic.SQLiteDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -495,7 +522,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = QJ7DWU7T8P;
 				INFOPLIST_FILE = SQLiteDemoTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fitamatic.SQLiteDemoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
@@ -510,7 +541,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = QJ7DWU7T8P;
 				INFOPLIST_FILE = SQLiteDemoTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fitamatic.SQLiteDemoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
@@ -524,7 +559,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = QJ7DWU7T8P;
 				INFOPLIST_FILE = SQLiteDemoUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fitamatic.SQLiteDemoUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
@@ -538,7 +577,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = QJ7DWU7T8P;
 				INFOPLIST_FILE = SQLiteDemoUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fitamatic.SQLiteDemoUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
@@ -586,6 +629,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1A4BFC5F24E1E9BD009D9AA1 /* XCRemoteSwiftPackageReference "swift-log" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:apple/swift-log.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.0;
+			};
+		};
+		1A4BFC6224E1EA5F009D9AA1 /* XCRemoteSwiftPackageReference "ObjectMapper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:tristanhimmelman/ObjectMapper.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1A4BFC6024E1E9BD009D9AA1 /* Logging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1A4BFC5F24E1E9BD009D9AA1 /* XCRemoteSwiftPackageReference "swift-log" */;
+			productName = Logging;
+		};
+		1A4BFC6324E1EA5F009D9AA1 /* ObjectMapper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1A4BFC6224E1EA5F009D9AA1 /* XCRemoteSwiftPackageReference "ObjectMapper" */;
+			productName = ObjectMapper;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1AB750751F92946A00D87E0F /* Project object */;
 }

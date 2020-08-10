@@ -7,12 +7,17 @@
 //
 
 import Foundation
+import Logging
+
+//Constants
+let SQL             = "SQL"
+let PARAMS          = "PARAMS"
+let EN_KEY          = "45763887E33478287EFFEB42890CD1EF"
 
 private let SQLITE_DATE = SQLITE_NULL + 1
 private let SQLITE_STATIC = unsafeBitCast(0, to:sqlite3_destructor_type.self)
 private let SQLITE_TRANSIENT = unsafeBitCast(-1, to:sqlite3_destructor_type.self)
 
-@objc(SQLDataAccess)
 class SQLDataAccess: NSObject {
     
     static let shared = SQLDataAccess()
@@ -22,6 +27,7 @@ class SQLDataAccess: NSObject {
     private var queue:DispatchQueue!
     private var sqlite3dbConn:OpaquePointer? = nil
     private let db_format = DateFormatter()
+    private var logger = Logger(label: "DA")
 
     public override init() {
         super.init()
@@ -30,10 +36,16 @@ class SQLDataAccess: NSObject {
         db_format.locale = Locale(identifier:"en_US_POSIX")
         db_format.timeZone = TimeZone(secondsFromGMT:0)
         db_format.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        logger.logLevel = .debug
     }
     
     deinit {
         closeConnection()
+    }
+    
+    @objc public func getDBName() -> String
+    {
+        return DB_FILE
     }
     
     public func setDBName(name:String)
@@ -56,11 +68,11 @@ class SQLDataAccess: NSObject {
             rc = sqlite3_close(sqlite3dbConn)
             if(rc == SQLITE_OK)
             {
-                NDBLog("DA : DB : CLOSED")
+                logger.debug("DA : DB : CLOSED")
             }
             else if(rc == SQLITE_BUSY)
             {
-                NDBLog("DA : DB : BUSY CLOSED")
+                logger.debug("DA : DB : BUSY CLOSED")
                 sqlite3_finalize(stmt);
             }
         }
@@ -83,12 +95,12 @@ class SQLDataAccess: NSObject {
         
         if(sqlite3dbConn != nil)
         {
-            NDBLog("DA : DB : OPENED")
+            logger.debug("DA : DB : OPENED")
             return true
         }
         else
         {
-            NDBLog("DA : DB : OPENING")
+            logger.debug("DA : DB : OPENING")
         }
         let fm = FileManager.default
         let docDir = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0]
@@ -111,13 +123,13 @@ class SQLDataAccess: NSObject {
         let error = sqlite3_open(cpath!, &sqlite3dbConn)
         if error != SQLITE_OK {
             // Open failed, close DB and fail
-            NELog("DA - failed to open \(DB_FILE)!")
+            logger.error("DA - failed to open \(DB_FILE)!")
             sqlite3_close(sqlite3dbConn)
             return false
         }
         else
         {
-            NDBLog("DA : \(DB_FILE) opened : path = \(path)")
+            logger.debug("DA : \(DB_FILE) opened : path = \(path)")
         }
         
         return true
@@ -173,13 +185,13 @@ class SQLDataAccess: NSObject {
                 }
                 else
                 {
-                    NELog("DA : SQL Error Stmt No match found for Data Type")
+                    logger.error("DA : SQL Error Stmt No match found for Data Type")
                 }
                 
                 if flag != SQLITE_OK {
                     let errMsg = String(validatingUTF8:sqlite3_errmsg(sqlite3dbConn))
                     let errCode = Int(sqlite3_errcode(sqlite3dbConn))
-                    NELog("DA : SQL Error bind Stmt : Err[\(errCode)] = \(String(describing: errMsg!)) : Q = \(query)\n");
+                    logger.error("DA : SQL Error bind Stmt : Err[\(errCode)] = \(String(describing: errMsg!)) : Q = \(query)\n");
                 }
             }
         }
@@ -187,7 +199,7 @@ class SQLDataAccess: NSObject {
         {
             let errMsg = String(validatingUTF8:sqlite3_errmsg(sqlite3dbConn))
             let errCode = Int(sqlite3_errcode(sqlite3dbConn))
-            NELog("DA : SQL Error prepared Stmt : Err[\(errCode)] = \(String(describing: errMsg!)) : Q = \(query)\n");
+            logger.error("DA : SQL Error prepared Stmt : Err[\(errCode)] = \(String(describing: errMsg!)) : Q = \(query)\n");
         }
         
         return ps
@@ -233,14 +245,13 @@ class SQLDataAccess: NSObject {
                 {
                     let errMsg = String(validatingUTF8:sqlite3_errmsg(sqlite3dbConn))
                     let errCode = Int(sqlite3_errcode(sqlite3dbConn))
-                    NELog("DA : SQL Error during execute : Err[\(errCode)] = \(String(describing: errMsg!)) : Q = \(query)\n");
+                    logger.error("DA : SQL Error during execute : Err[\(errCode)] = \(String(describing: errMsg!)) : Q = \(query)\n");
                 }
             }
             sqlite3_finalize(ps)
             sqlite3_exec(sqlite3dbConn, "COMMIT TRANSACTION", nil, nil, nil)
         }
         return status //queue.sync {status}
-        
     }
 
     public func getRecordsForQuery(_ query: String!, _ args:Any...) -> Array<Any> {
@@ -353,11 +364,11 @@ class SQLDataAccess: NSObject {
                                 }
                                 else
                                 {
-                                    NELog("DA : SQL Error getRecords Invalid Date ")
+                                    logger.error("DA : SQL Error getRecords Invalid Date ")
                                 }
                             }
                         default:
-                            NELog("DA : SQL Error getRecords Invalid column type")
+                            logger.error("DA : SQL Error getRecords Invalid column type")
                         }
                     }
                     results.append(result)
@@ -367,7 +378,7 @@ class SQLDataAccess: NSObject {
             {
                 let errMsg = String(validatingUTF8:sqlite3_errmsg(sqlite3dbConn))
                 let errCode = Int(sqlite3_errcode(sqlite3dbConn))
-                NELog("DA : SQL Error getRecords : Err[\(errCode)] = \(String(describing: errMsg!)) : Q = \(query)\n");
+                logger.error("DA : SQL Error getRecords : Err[\(errCode)] = \(String(describing: errMsg!)) : Q = \(query)\n");
             }
             sqlite3_finalize(ps)
         }
@@ -407,7 +418,7 @@ class SQLDataAccess: NSObject {
                     {
                         let errMsg = String(validatingUTF8:sqlite3_errmsg(sqlite3dbConn))
                         let errCode = Int(sqlite3_errcode(sqlite3dbConn))
-                        NELog("DA : SQL Error during executeTransaction : Err[\(errCode)] = \(String(describing: errMsg!)) : Q = \(query)\n");
+                        logger.error("DA : SQL Error during executeTransaction : Err[\(errCode)] = \(String(describing: errMsg!)) : Q = \(query)\n");
                         sqlite3_exec(sqlite3dbConn, "ROLLBACK", nil, nil, nil)
                     }
                 }
@@ -415,7 +426,6 @@ class SQLDataAccess: NSObject {
                 sqlite3_exec(sqlite3dbConn, "COMMIT TRANSACTION", nil, nil, nil)
             }
         }
-
         return status
     }
     
