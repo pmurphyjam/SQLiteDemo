@@ -31,7 +31,7 @@ First you need to open the SQLite Database your dealing with
 If openConnection succeeded it found your DB, now you can do a simple insert into Table AppInfo. The above two lines created the DataManager, and copied the SQLite.db to the Documents directory so the App can use it. 
 	
 ```swift
-	var appInfo = AppInfo(name: "SQLiteDemo", value: "1.0.2", descrip: "unencrypted", date: Date(), blob: blob)
+   var appInfo = AppInfo(name: "SQLiteDemo", value: "1.0.2", descrip: "unencrypted", date: Date(), blob: blob)
    let status = Models.insertAppInfo(appInfo)
 ```
 
@@ -42,8 +42,8 @@ The first line creates an AppInfo Struct, and the next line writes the Struct in
 Now say you want to display it, well that's even easier!
 
 ```swift
-	let results = Models.getAppInfo()
-	 print(“results = \(results)”)
+    let results = Models.getAppInfo()
+    print(“results = \(results)”)
 ```
 
 Yeap that's it, getAppInfo reads the SQLite.db and 'select * from AppInfo' returns an Array of AppInfo structures for you to consume in your view controller.
@@ -95,6 +95,6 @@ In addition all executeStatement and getRecordsForQuery methods can be done with
 	
 In addition SQLDataAccess will also work with SQLCipher, the present code isn't setup yet to work with it, but it's pretty easy to do, and an example of how to do this is actually in the Objective-C version of SQLDataAccess.
 
-SQLDataAccess is a very fast and efficient class and guaranteed to not leak memory, and can be used in place of CoreData or Realm which really just uses SQLite as it's underlying data store without all the CoreData core data integrity fault crashes that come with CoreData. CoreData and Realm need to update their models on the main thread which is a real problem if your trying to display data in a view controller at the same time. This means your view controller will become slow and not scroll efficiently for a TableView or CollectionView because it's updating CoreData or Realm Entities. In addition if you do these updates on a background thread Core Data and Realm will crash. SQLDataAccess has none of these threading problems, and you can read or write data on either the background or foreground threads, and it's thread safe and guaranteed to finish an update or insert before it starts another one.
+SQLDataAccess is a very fast and efficient class and guaranteed to not leak memory, and can be used in place of CoreData or Realm which really just uses SQLite as it's underlying data store without all the CoreData integrity fault crashes that come with CoreData. CoreData and Realm need to update their models on the main thread which is a real problem if your trying to display data in a view controller which is consuming a lot of data at the same time. This means your view controller will become slow and not scroll efficiently for a TableView or CollectionView because it's updating CoreData or Realm Entities. In addition if you do these updates on a background thread Core Data and Realm will crash. SQLDataAccess has none of these threading problems, and you can read or write data on either the background or foreground threads, and it's thread safe and guaranteed to finish an update or insert before it starts another one.
 
 So make your life easier, and all your Apps more reliable, and use SQLDataAccess, and best of all it's free with no license required!
