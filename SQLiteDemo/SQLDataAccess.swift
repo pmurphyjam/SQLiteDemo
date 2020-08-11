@@ -80,7 +80,7 @@ class SQLDataAccess: NSObject {
     }
     
     override var description:String {
-        return "DA : DB path \(path)"
+        return "DA : DB path \(path!)"
     }
     
     public func dbDateStr(date:Date) -> String {
@@ -133,6 +133,58 @@ class SQLDataAccess: NSObject {
         }
         
         return true
+    }
+    
+    public func dbEncrypt(_ key:String)
+    {
+        let sql1 = String(format:"ft67s%@58uy%@fge4",EN_KEY,key)
+        #if ENCRYPT
+            //This method only exists in SQLCipher
+            sqlite3_key(sqlite3dbConn,sql1,Int(strlen(sql1)))
+        #endif
+        let sql2 = String(format:"PRAGMA cipher = 'aes-256-cfb';")
+        sqlite3_exec(sqlite3dbConn, sql2, nil, nil, nil);
+        let errCode = Int(sqlite3_errcode(sqlite3dbConn))
+        if(errCode != SQLITE_OK)
+        {
+            let errMsg = String(validatingUTF8:sqlite3_errmsg(sqlite3dbConn))
+            logger.error("DA : ENCRYPT : sqlErrCode = \(errCode) : sqlErrMsg = \(errMsg!)")
+        }
+    }
+    
+    public func dbDecrypt()
+    {
+        DataManager.copyDBtoDocumentDirectory(copyDBFile: DB_FILE, toDBFile: DB_FILE+"X")
+        let dbFileX = DataManager.pathForFileWithName(fileName: DB_FILE+"X")
+        let sql1 = String(format:"attach database '%@' as plaintext KEY '';",dbFileX)
+        sqlite3_exec(sqlite3dbConn, sql1, nil, nil, nil)
+        
+        let sql2 = String(format:"select sqlcipher_export('plaintext');")
+        sqlite3_exec(sqlite3dbConn, sql2, nil, nil, nil)
+        
+        let sql3 = String(format:"detach database plaintext;")
+        sqlite3_exec(sqlite3dbConn, sql3, nil, nil, nil)
+        let errCode = Int(sqlite3_errcode(sqlite3dbConn))
+        if(errCode != SQLITE_OK)
+        {
+            let errMsg = String(validatingUTF8:sqlite3_errmsg(sqlite3dbConn))
+            logger.error("DA : DECRYPT : sqlErrCode = \(errCode) : sqlErrMsg = \(errMsg!)")
+        }
+        DataManager.replaceDBinDocumentDirectory(removeDBFile: DB_FILE, renameDBFile: DB_FILE+"X")
+        let path = DataManager.pathForFileWithName(fileName: DB_FILE)
+        // Open the DB
+        let cpath = path.cString(using:String.Encoding.utf8)
+        let error = sqlite3_open(cpath!, &sqlite3dbConn)
+        if error != SQLITE_OK {
+            // Open failed, close DB and fail
+            logger.error("DA - failed to open \(DB_FILE)!")
+            sqlite3_close(sqlite3dbConn)
+        }
+        else
+        {
+            logger.debug("DA : \(DB_FILE) opened : path = \(path)")
+        }
+        
     }
     
     private func stmt(_ ps: inout OpaquePointer!, forQuery query: String, withParams parameters: Array<Any>!) -> OpaquePointer! {
@@ -378,7 +430,7 @@ class SQLDataAccess: NSObject {
             {
                 let errMsg = String(validatingUTF8:sqlite3_errmsg(sqlite3dbConn))
                 let errCode = Int(sqlite3_errcode(sqlite3dbConn))
-                logger.error("DA : SQL Error getRecords : Err[\(errCode)] = \(String(describing: errMsg!)) : Q = \(query)\n");
+                logger.error("DA : SQL Error getRecords : Err[\(errCode)] = \(String(describing: errMsg!)) : Q = \(query!)\n");
             }
             sqlite3_finalize(ps)
         }

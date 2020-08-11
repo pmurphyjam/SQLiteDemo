@@ -116,7 +116,7 @@ class DataManager: NSObject {
         return status
     }
     
-    class func copyDBtoDocumentDirectory(copyDBFile:String, toDBFile:String) -> Bool
+    @discardableResult class func copyDBtoDocumentDirectory(copyDBFile:String, toDBFile:String) -> Bool
     {
         var status:Bool = false
         let fm = FileManager.default
@@ -136,7 +136,7 @@ class DataManager: NSObject {
         return status
     }
     
-    class func replaceDBinDocumentDirectory(removeDBFile:String, renameDBFile:String) -> Bool
+    @discardableResult class func replaceDBinDocumentDirectory(removeDBFile:String, renameDBFile:String) -> Bool
     {
         var status:Bool = false
         let fm = FileManager.default
