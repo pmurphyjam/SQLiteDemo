@@ -90,6 +90,38 @@ class ViewController: UIViewController {
         
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureSubviews()
+    }
+    
+    private func configureSubviews() {
+        view.addSubview(titleLabel)
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
+            titleLabel.heightAnchor.constraint(equalToConstant: 160),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant:16),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant:-16)
+        ])
+    }
+    
+    private lazy var titleLabel: UILabel = {
+         let view = UILabel()
+         view.translatesAutoresizingMaskIntoConstraints = false
+         view.font = UIFont(name: "HelveticaNeue-Bold", size: 30)
+         view.numberOfLines = 0
+         view.textColor = UIColor.black
+         view.lineBreakMode = .byTruncatingTail
+         var paragraphStyle = NSMutableParagraphStyle()
+         paragraphStyle.lineHeightMultiple = 1.07
+         paragraphStyle.lineSpacing = 8
+         let name = "Look at your Xcode Console Log to see the results."
+         let attributedText = NSMutableAttributedString(string: name,
+                                                        attributes: [NSAttributedString.Key.kern: 0.25,NSAttributedString.Key.paragraphStyle:paragraphStyle])
+         view.attributedText = attributedText
+         return view
+    }()
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
