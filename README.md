@@ -9,7 +9,13 @@ You only need five files to add to your project
 * sqlite3.h 
 * SQLite.db this is the DB
 
-  You also need two Packages, swift-log, ObjectMapper.
+  You also need two Packages:
+  
+  1) swift-log (git@github.com:apple/swift-log.git)
+  
+  2) ObjectMapper (git@github.com:tristanhimmelman/ObjectMapper.git)
+  
+  To add these go to Xcode Project 'Swift Packages' and hit the '+' button and then enter the URL for these.
 
   The AppInfo.swift struct shows you how to write your Codable Models for your DB. It uses Codable, Sqldb, and Mappable. You need to define 'tableName' and then all the columns in your DB table. The func dbDecode Maps the SQL & PARAMS Dictionary which you get back from SQLDataAccess back to an AppInfo struct for you so your View Controller can consume it.
   
