@@ -1,5 +1,5 @@
 # SQLiteDemo
-SQLite Demo using Swift with SQLDataAccess class written in Swift
+SQLite Demo in Swift using SQLPackage.
 
 ## Adding to Your Project
 You only need five files to add to your project
