@@ -9,9 +9,9 @@
 /* Begin PBXBuildFile section */
 		1A4BFC6624E1F29B009D9AA1 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4BFC6524E1F29B009D9AA1 /* AppInfo.swift */; };
 		1A4BFC6824E1F636009D9AA1 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4BFC6724E1F636009D9AA1 /* Models.swift */; };
-		1A8E931724E8BD0200C2AD24 /* SQLDataAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 1A8E931624E8BD0200C2AD24 /* SQLDataAccess */; };
-		1A8E931924E8BD0200C2AD24 /* DataManager in Frameworks */ = {isa = PBXBuildFile; productRef = 1A8E931824E8BD0200C2AD24 /* DataManager */; };
-		1A8E931B24E8BD0200C2AD24 /* Sqldb in Frameworks */ = {isa = PBXBuildFile; productRef = 1A8E931A24E8BD0200C2AD24 /* Sqldb */; };
+		1A8E932524E8D00200C2AD24 /* SQLDataAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 1A8E932424E8D00200C2AD24 /* SQLDataAccess */; };
+		1A8E932724E8D00200C2AD24 /* DataManager in Frameworks */ = {isa = PBXBuildFile; productRef = 1A8E932624E8D00200C2AD24 /* DataManager */; };
+		1A8E932924E8D00200C2AD24 /* Sqldb in Frameworks */ = {isa = PBXBuildFile; productRef = 1A8E932824E8D00200C2AD24 /* Sqldb */; };
 		1AB750811F92946A00D87E0F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB750801F92946A00D87E0F /* AppDelegate.swift */; };
 		1AB750831F92946A00D87E0F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB750821F92946A00D87E0F /* ViewController.swift */; };
 		1AB750861F92946A00D87E0F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AB750841F92946A00D87E0F /* Main.storyboard */; };
@@ -67,9 +67,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AB750B21F9295B400D87E0F /* libsqlite3.tbd in Frameworks */,
-				1A8E931724E8BD0200C2AD24 /* SQLDataAccess in Frameworks */,
-				1A8E931924E8BD0200C2AD24 /* DataManager in Frameworks */,
-				1A8E931B24E8BD0200C2AD24 /* Sqldb in Frameworks */,
+				1A8E932524E8D00200C2AD24 /* SQLDataAccess in Frameworks */,
+				1A8E932724E8D00200C2AD24 /* DataManager in Frameworks */,
+				1A8E932924E8D00200C2AD24 /* Sqldb in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,9 +179,9 @@
 			);
 			name = SQLiteDemo;
 			packageProductDependencies = (
-				1A8E931624E8BD0200C2AD24 /* SQLDataAccess */,
-				1A8E931824E8BD0200C2AD24 /* DataManager */,
-				1A8E931A24E8BD0200C2AD24 /* Sqldb */,
+				1A8E932424E8D00200C2AD24 /* SQLDataAccess */,
+				1A8E932624E8D00200C2AD24 /* DataManager */,
+				1A8E932824E8D00200C2AD24 /* Sqldb */,
 			);
 			productName = SQLiteDemo;
 			productReference = 1AB7507D1F92946A00D87E0F /* SQLiteDemo.app */;
@@ -263,7 +263,7 @@
 			);
 			mainGroup = 1AB750741F92946A00D87E0F;
 			packageReferences = (
-				1A8E931524E8BD0200C2AD24 /* XCRemoteSwiftPackageReference "SQLPackage" */,
+				1A8E932324E8D00200C2AD24 /* XCRemoteSwiftPackageReference "SQLPackage" */,
 			);
 			productRefGroup = 1AB7507E1F92946A00D87E0F /* Products */;
 			projectDirPath = "";
@@ -623,30 +623,30 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		1A8E931524E8BD0200C2AD24 /* XCRemoteSwiftPackageReference "SQLPackage" */ = {
+		1A8E932324E8D00200C2AD24 /* XCRemoteSwiftPackageReference "SQLPackage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "git@github.com:pmurphyjam/SQLPackage.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.6;
+				minimumVersion = 1.1.8;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1A8E931624E8BD0200C2AD24 /* SQLDataAccess */ = {
+		1A8E932424E8D00200C2AD24 /* SQLDataAccess */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1A8E931524E8BD0200C2AD24 /* XCRemoteSwiftPackageReference "SQLPackage" */;
+			package = 1A8E932324E8D00200C2AD24 /* XCRemoteSwiftPackageReference "SQLPackage" */;
 			productName = SQLDataAccess;
 		};
-		1A8E931824E8BD0200C2AD24 /* DataManager */ = {
+		1A8E932624E8D00200C2AD24 /* DataManager */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1A8E931524E8BD0200C2AD24 /* XCRemoteSwiftPackageReference "SQLPackage" */;
+			package = 1A8E932324E8D00200C2AD24 /* XCRemoteSwiftPackageReference "SQLPackage" */;
 			productName = DataManager;
 		};
-		1A8E931A24E8BD0200C2AD24 /* Sqldb */ = {
+		1A8E932824E8D00200C2AD24 /* Sqldb */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1A8E931524E8BD0200C2AD24 /* XCRemoteSwiftPackageReference "SQLPackage" */;
+			package = 1A8E932324E8D00200C2AD24 /* XCRemoteSwiftPackageReference "SQLPackage" */;
 			productName = Sqldb;
 		};
 /* End XCSwiftPackageProductDependency section */
