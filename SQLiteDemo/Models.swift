@@ -8,10 +8,13 @@
 
 import Foundation
 import Logging
+import DataManager
 
 class Models: NSObject {
 
     static var logger = Logger(label: "Models")
+    static let SQL             = "SQL"
+    static let PARAMS          = "PARAMS"
     
     // MARK: - AppInfo
     class func insertAppInfoSQL(_ appInfo:AppInfo) -> Dictionary<String,Any>
@@ -26,7 +29,7 @@ class Models: NSObject {
     @discardableResult class func insertAppInfo(_ appInfo:AppInfo) -> Bool
     {
         let sqlParams = self.insertAppInfoSQL(appInfo)
-        let status = DataManager.dataAccess.executeStatement(sqlParams[SQL] as! String, withParams: sqlParams[PARAMS] as! Array<Any>)
+        let status = DataManager.executeStatement(sqlParams[SQL] as! String, withParams: sqlParams[PARAMS] as? Array<Any>)
         return status
     }
     
@@ -40,14 +43,14 @@ class Models: NSObject {
     @discardableResult class func updateAppInfo(_ appInfo:AppInfo) -> Bool
     {
         let sqlParams = self.updateAppInfoSQL(appInfo)
-        let status = DataManager.dataAccess.executeStatement(sqlParams[SQL] as! String, withParams: sqlParams[PARAMS] as! Array<Any>)
+        let status = DataManager.executeStatement(sqlParams[SQL] as! String, withParams: sqlParams[PARAMS] as? Array<Any>)
         return status
     }
     
     class func getAppInfo() -> [AppInfo]
     {
         let appInfo:AppInfo? = AppInfo()
-        let dataArray = DataManager.dataAccess.getRecordsForQuery("select * from AppInfo ")
+        let dataArray = DataManager.getRecordsForQuery("select * from AppInfo ")
         let appInfoArray = appInfo?.dbDecode(dataArray:dataArray as! Array<[String : AnyObject]>)
         return appInfoArray!
     }

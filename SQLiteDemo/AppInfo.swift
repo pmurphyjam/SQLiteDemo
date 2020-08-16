@@ -8,6 +8,8 @@
 
 import UIKit
 import ObjectMapper
+import SQLDataAccess
+import Sqldb
 
 struct AppInfo: Codable,Sqldb,Mappable {
     

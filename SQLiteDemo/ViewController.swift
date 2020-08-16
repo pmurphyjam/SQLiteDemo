@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DataManager
 
 class ViewController: UIViewController {
 
@@ -14,20 +15,21 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         DataManager.init()
-        let opened = DataManager.dataAccess.openConnection(copyFile: true)
+        DataManager.setDBName(name: "SQLite.db")
+        let opened = DataManager.openDBConnection()
         
         if(opened)
         {
             NSLog("Found SQLite DB")
             
             let dict = ["Password":"123456"]
-            let blob : Data = NSKeyedArchiver.archivedData(withRootObject:dict) as Data
+            let blob : Data = try! NSKeyedArchiver.archivedData(withRootObject: dict, requiringSecureCoding: true)
 
             var appInfo = AppInfo(name: "SQLiteDemo", value: "1.0.2", descrip: "unencrypted", date: Date(), blob: blob)
             let status = Models.insertAppInfo(appInfo)
             /*
              //OR you can write it explicitly
-            let status = DataManager.dataAccess.executeStatement("insert into AppInfo (name,value,descrip,date,blob) values(?,?,?,?,?)", "SQLiteDemo","1.0.2","unencrypted",Date(),blob)
+            let status = DataManager.executeStatement("insert into AppInfo (name,value,descrip,date,blob) values(?,?,?,?,?)", "SQLiteDemo","1.0.2","unencrypted",Date(),blob)
             */
             if(status)
             {
@@ -40,7 +42,7 @@ class ViewController: UIViewController {
                     let value = appInfo.blob
                     if (value?.count)! > 0
                     {
-                        let dictionary:NSDictionary? = NSKeyedUnarchiver.unarchiveObject(with: value! )! as? NSDictionary
+                        let dictionary:NSDictionary? = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(value!) as? NSDictionary
                         NSLog("dictionary[\(value!)] = \(dictionary!)")
                     }
                 }
@@ -49,30 +51,30 @@ class ViewController: UIViewController {
             //Test Transactions
             var sqlAndParams = [[String:Any]]() //Array of SQL and Params Transactions
             let dict1 = ["Password":"123456"]
-            let blob1 : Data = NSKeyedArchiver.archivedData(withRootObject:dict1) as Data
+            let blob1 : Data = try! NSKeyedArchiver.archivedData(withRootObject: dict1, requiringSecureCoding: true)
             appInfo = AppInfo(name: "SQLIteDemo", value: "1.0.0", descrip: "unencrypted", date: Date(), blob: blob1)
             let  sqlParams1 = Models.insertAppInfoSQL(appInfo)
             sqlAndParams.append(sqlParams1)
             
             let dict2 = ["Password":"789045"]
-            let blob2 : Data = NSKeyedArchiver.archivedData(withRootObject:dict2) as Data
+            let blob2 : Data = try! NSKeyedArchiver.archivedData(withRootObject: dict2, requiringSecureCoding: true)
             appInfo = AppInfo(name: "SQLIteDemo", value: "1.0.0", descrip: "unencrypted", date: Date(), blob: blob2)
             let  sqlParams2 = Models.insertAppInfoSQL(appInfo)
             sqlAndParams.append(sqlParams2)
 
             let dict3 = ["Password":"456782"]
-            let blob3 : Data = NSKeyedArchiver.archivedData(withRootObject:dict3) as Data
+            let blob3 : Data = try! NSKeyedArchiver.archivedData(withRootObject: dict3, requiringSecureCoding: true)
             appInfo = AppInfo(name: "SQLIteDemo", value: "1.0.0", descrip: "unencrypted", date: Date(), blob: blob3)
             let  sqlParams3 = Models.insertAppInfoSQL(appInfo)
             sqlAndParams.append(sqlParams3)
 
             let dict4 = ["Password":"876543"]
-            let blob4 : Data = NSKeyedArchiver.archivedData(withRootObject:dict4) as Data
+            let blob4 : Data = try! NSKeyedArchiver.archivedData(withRootObject: dict4, requiringSecureCoding: true)
             appInfo = AppInfo(name: "SQLIteDemo", value: "1.0.0", descrip: "unencrypted", date: Date(), blob: blob4)
             let  sqlParams4 = Models.insertAppInfoSQL(appInfo)
             sqlAndParams.append(sqlParams4)
 
-            let status1 = DataManager.dataAccess.executeTransaction(sqlAndParams)
+            let status1 = DataManager.executeTransaction(sqlAndParams)
             if(status1)
             {
                 let results = Models.getAppInfo()
@@ -81,7 +83,7 @@ class ViewController: UIViewController {
                     let value = appInfo.blob
                     if (value?.count)! > 0
                     {
-                        let dictionary:NSDictionary? = NSKeyedUnarchiver.unarchiveObject(with: value! )! as? NSDictionary
+                        let dictionary:NSDictionary? = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(value!) as? NSDictionary
                         NSLog("dictionary[\(value!)] = \(dictionary!)")
                     }
                 }
