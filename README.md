@@ -30,7 +30,7 @@ The results array is an Array of Dictionary’s where the ‘key’ is your tabl
     status = DataManager.dataAccess.executeStatement("insert into AppInfo (name,value,descrip,date,blob) values(?,?,?,?,?)", "SQLiteDemo","1.0.2","unencrypted",Date(),blob)
     
     //Done by getSQLUpdate()
-    status = DataManager.executeStatement("update AppInfo set name = ?, value = ?, descrip = ?, date = ?, blob = ? where value = ?","SQLiteDemo","1.0.2","unencrypted",Date(),blob,value)
+    status = DataManager.dataAcess.executeStatement("update AppInfo set name = ?, value = ?, descrip = ?, date = ?, blob = ? where value = ?","SQLiteDemo","1.0.2","unencrypted",Date(),blob,value)
     
     let dataArray = DataManager.dataAccess.getRecordsForQuery("select value from AppInfo where value = ?",value)
     if(dataArray.count > 0)
@@ -111,11 +111,11 @@ In addition all executeStatement and getRecordsForQuery methods can be done with
 ```swift
 	let sql : String = "insert into AppInfo (name,value,descrip) values(?,?,?)"
 	let params : Array = ["SQLiteDemo","1.0.0","unencrypted"]
-	let status = DataManager.executeStatement(sql, withParameters: params)
+	let status = DataManager.dataAccess.executeStatement(sql, withParameters: params)
 	if(status)
 	{
 		//Read Table AppInfo into an Array of Dictionaries for the above Transactions
-		let results = DataManager.getRecordsForQuery("select * from AppInfo ")
+		let results = DataManager.dataAccess.getRecordsForQuery("select * from AppInfo ")
 		NSLog("Results = \(results)")
 	}
 ```
