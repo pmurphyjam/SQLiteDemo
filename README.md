@@ -27,19 +27,19 @@ The results array is an Array of Dictionary’s where the ‘key’ is your tabl
 ```swift
     var status:Bool? = false
     //Done by getSQLInsert()
-    status = DataManager.executeStatement("insert into AppInfo (name,value,descrip,date,blob) values(?,?,?,?,?)", "SQLiteDemo","1.0.2","unencrypted",Date(),blob)
+    status = DataManager.dataAccess.executeStatement("insert into AppInfo (name,value,descrip,date,blob) values(?,?,?,?,?)", "SQLiteDemo","1.0.2","unencrypted",Date(),blob)
     
     //Done by getSQLUpdate()
     status = DataManager.executeStatement("update AppInfo set name = ?, value = ?, descrip = ?, date = ?, blob = ? where value = ?","SQLiteDemo","1.0.2","unencrypted",Date(),blob,value)
     
-    let dataArray = DataManager.getRecordsForQuery("select value from AppInfo where value = ?",value)
+    let dataArray = DataManager.dataAccess.getRecordsForQuery("select value from AppInfo where value = ?",value)
     if(dataArray.count > 0)
     {
        return status!
     }
     
     let appInfo:AppInfo? = AppInfo()
-    let dataArray = DataManager.getRecordsForQuery("select * from AppInfo where value = ?",value)
+    let dataArray = DataManager.dataAccess.getRecordsForQuery("select * from AppInfo where value = ?",value)
     let resultsArray = appInfo?.dbDecode(dataArray:dataArray as! Array<[String : AnyObject]>)
     return resultsArray!
     
@@ -82,7 +82,7 @@ You can also write the SQL Queries if you choose too, but having the Models.swif
 The ViewController.swift also shows you how to do SQL Transactions. All these are is an Array of SQL Queries that are appended together, and then you execute all of them at once with:
 
 ```swift
-   let status = DataManager.executeTransaction(sqlAndParams)
+   let status = DataManager.dataAccess.executeTransaction(sqlAndParams)
 ```
 
 The advantage of this is you can literally insert 1,000 Objects at once which is exponentially faster than doing individual inserts back to back. This comes in very handy when your Server API returns a hundred JSON objects that need to be saved in your DB quickly. SQLDataAccess spends no more than a few hundred milliseconds writing all that data into the DB, rather than seconds if you were to do them individually.

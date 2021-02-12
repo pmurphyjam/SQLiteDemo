@@ -8,9 +8,17 @@
 
 import UIKit
 import DataManager
+import Logging
 
 class ViewController: UIViewController {
 
+    var log: Logger
+    {
+        var logger = Logger(label: "VCtrl")
+        logger.logLevel = .debug
+        return logger
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -20,7 +28,7 @@ class ViewController: UIViewController {
         
         if(opened)
         {
-            NSLog("Found SQLite DB")
+            log.debug("Found SQLite DB")
             
             let dict = ["Password":"123456"]
             let blob : Data = try! NSKeyedArchiver.archivedData(withRootObject: dict, requiringSecureCoding: true)
@@ -29,13 +37,13 @@ class ViewController: UIViewController {
             let status = Models.insertAppInfo(appInfo)
             /*
              //OR you can write it explicitly
-            let status = DataManager.executeStatement("insert into AppInfo (name,value,descrip,date,blob) values(?,?,?,?,?)", "SQLiteDemo","1.0.2","unencrypted",Date(),blob)
+            let status = DataManager.dataAccess.executeStatement("insert into AppInfo (name,value,descrip,date,blob) values(?,?,?,?,?)", "SQLiteDemo","1.0.2","unencrypted",Date(),blob)
             */
             if(status)
             {
-                NSLog("Insert Ok")
+                log.debug("Insert Ok")
                 let results = Models.getAppInfo()
-                NSLog("Results = \(results)")
+                log.debug("Results = \(results)")
                 
                 for appInfo in results
                 {
@@ -43,7 +51,7 @@ class ViewController: UIViewController {
                     if (value?.count)! > 0
                     {
                         let dictionary:NSDictionary? = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(value!) as? NSDictionary
-                        NSLog("dictionary[\(value!)] = \(dictionary!)")
+                        log.debug("dictionary[\(value!)] = \(dictionary!)")
                     }
                 }
             }
@@ -74,7 +82,7 @@ class ViewController: UIViewController {
             let  sqlParams4 = Models.insertAppInfoSQL(appInfo)
             sqlAndParams.append(sqlParams4)
 
-            let status1 = DataManager.executeTransaction(sqlAndParams)
+            let status1 = DataManager.dataAccess.executeTransaction(sqlAndParams)
             if(status1)
             {
                 let results = Models.getAppInfo()
@@ -84,10 +92,13 @@ class ViewController: UIViewController {
                     if (value?.count)! > 0
                     {
                         let dictionary:NSDictionary? = try! NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(value!) as? NSDictionary
-                        NSLog("dictionary[\(value!)] = \(dictionary!)")
+                        log.debug("dictionary[\(value!)] = \(dictionary!)")
                     }
                 }
             }
+            
+            let doesExist = Models.doesAppInfoExistForName("SQLIteDemo")
+            log.debug("doesExist = \(doesExist)")
         }
         
     }

@@ -10,48 +10,67 @@ import Foundation
 import Logging
 import DataManager
 
-class Models: NSObject {
+struct Models  {
 
-    static var logger = Logger(label: "Models")
     static let SQL             = "SQL"
     static let PARAMS          = "PARAMS"
     
-    // MARK: - AppInfo
-    class func insertAppInfoSQL(_ appInfo:AppInfo) -> Dictionary<String,Any>
+    static var log: Logger
     {
-        //Here we let Sqldb create the SQL insert syntax for us
-        let sqlParams = appInfo.getSQLInsert()!
+        var logger = Logger(label: "Models")
         logger.logLevel = .debug
-        logger.debug("Models : insertAppInfoSQL : sqlParams = \(sqlParams) ")
+        return logger
+    }
+    
+    // MARK: - AppInfo
+    static func insertAppInfoSQL(_ obj:AppInfo) -> Dictionary<String,Any>
+    {
+        //Let Sqldb create the SQL insert syntax for us
+        //creates SQL : insert into AppInfo (name,value,descript,date,blob) values(?,?,?,?,?)
+        let sqlParams = obj.getSQLInsert()!
+        log.debug("insertAppInfoSQL : sqlParams = \(sqlParams) ")
         return sqlParams
     }
     
-    @discardableResult class func insertAppInfo(_ appInfo:AppInfo) -> Bool
+    @discardableResult static func insertAppInfo(_ obj:AppInfo) -> Bool
     {
-        let sqlParams = self.insertAppInfoSQL(appInfo)
-        let status = DataManager.executeStatement(sqlParams[SQL] as! String, withParams: sqlParams[PARAMS] as? Array<Any>)
+        let sqlParams = self.insertAppInfoSQL(obj)
+        let status = DataManager.dataAccess.executeStatement(sqlParams[SQL] as! String, withParams: sqlParams[PARAMS] as? Array<Any>)
         return status
     }
     
-    class func updateAppInfoSQL(_ appInfo:AppInfo) -> Dictionary<String,Any>
+    static func updateAppInfoSQL(_ obj:AppInfo) -> Dictionary<String,Any>
     {
-        let sqlParams = appInfo.getSQLUpdate(whereItems:"name")!
-        logger.debug("Models : updateAppInfoSQL : sqlParams = \(sqlParams) ")
+        //Let Sqldb create the SQL update syntax for us
+        //creates SQL : update AppInfo set value = ?, descrip = ?, data = ?, blob = ? where name = ?
+        let sqlParams = obj.getSQLUpdate(whereItems:"name")!
+        log.debug("updateAppInfoSQL : sqlParams = \(sqlParams) ")
         return sqlParams
     }
     
-    @discardableResult class func updateAppInfo(_ appInfo:AppInfo) -> Bool
+    @discardableResult static func updateAppInfo(_ obj:AppInfo) -> Bool
     {
-        let sqlParams = self.updateAppInfoSQL(appInfo)
-        let status = DataManager.executeStatement(sqlParams[SQL] as! String, withParams: sqlParams[PARAMS] as? Array<Any>)
+        let sqlParams = self.updateAppInfoSQL(obj)
+        let status = DataManager.dataAccess.executeStatement(sqlParams[SQL] as! String, withParams: sqlParams[PARAMS] as? Array<Any>)
         return status
     }
     
-    class func getAppInfo() -> [AppInfo]
+    static func getAppInfo() -> [AppInfo]
     {
-        let appInfo:AppInfo? = AppInfo()
-        let dataArray = DataManager.getRecordsForQuery("select * from AppInfo ")
-        let appInfoArray = appInfo?.dbDecode(dataArray:dataArray as! Array<[String : AnyObject]>)
+        let obj:AppInfo? = AppInfo()
+        let dataArray = DataManager.dataAccess.getRecordsForQuery("select * from AppInfo ")
+        let appInfoArray = obj?.dbDecode(dataArray:dataArray as! Array<[String : AnyObject]>)
         return appInfoArray!
+    }
+    
+    static func doesAppInfoExistForName(_ name:String) -> Bool
+    {
+        var status:Bool? = false
+        let dataArray = DataManager.dataAccess.getRecordsForQuery("select name from AppInfo where name = ?",name)
+        if (dataArray.count > 0)
+        {
+            status = true
+        }
+        return status!
     }
 }

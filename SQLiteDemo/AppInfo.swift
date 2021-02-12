@@ -95,7 +95,7 @@ extension AppInfo : CustomStringConvertible
         }
         if(blob != nil)
         {
-            description += "\r: blob = \(blob?.count)"
+            description += "\r: blob = \(blob!.count)"
         }
         return description
     }
